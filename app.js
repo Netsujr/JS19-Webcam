@@ -11,7 +11,18 @@ function getVideo() {
       video.src = window.URL.createObjectURL(localMediaStream);
       video.play();
       // console.log(localMediaStream);
+    }).catch(err => {
+      console.error(`Webcam Access Denied`, err);
     });
+}
+
+function paintToCanvas () {
+  const width = video.videoWidth;
+  const height = video.videoHeight;
+  // canvas must be same size as video
+  canvas.width = width;
+  canvas.height = height;
+
 }
 
 // localhost works but camera does not work
