@@ -25,7 +25,11 @@ function paintToCanvas() {
 
   return setInterval(() => {
     ctx.drawImage(video, 0, 0, width, height);
+    let pixels = ctx.getImageData(0, 0, width, height); // array of pixels (rgba)
     // the 0, 0 is where it should start from. then width and height is destination
+    pixels = redEffect(pixels);
+    ctx.putImageData(pixels, 0, 0);
+    // 1. Take pixels data || 2. change the pixels data || 3. put it back to the canvas
   }, 16);
 }
 
@@ -43,6 +47,15 @@ function takePhoto() {
 
 getVideo();
 video.addEventListener('canplay', paintToCanvas);
+
+function redEffect(pixels) {
+  for(let i = 0; i < pixels.data.length; i += 4) {
+    pixels.data[i + 0] = pixels.data[i + 0] + 200; // red
+    pixels.data[i + 1] = pixels.data[i + 1] - 50; // green
+    pixels.data[i + 2] = pixels.data[i + 2] * 0.5; // blue
+  }
+  return pixels;
+}
 
 // localhost works but camera does not work
 // cannot 'getUserMedia' over synched network
